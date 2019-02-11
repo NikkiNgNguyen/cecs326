@@ -9,7 +9,7 @@ See the examples covered in class for reference:
 
 * Creating a text file from a NASM program: WritingToFile
 * Looping example covered in class
-* Usage of multiplication and division to convert from Celsiu to Fahrenheit
+* Usage of multiplication and division to convert from Celsius to Fahrenheit
 * No information needs to be written to standard output.  The print char macro can be modified so data is written into the text file instead of standard output
 ---
 For example:
