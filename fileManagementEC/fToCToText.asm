@@ -57,8 +57,10 @@ stderr		equ		3
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;	DATA SEGMENT	;;;;;;;;;;;;;;;;;;;;
 SECTION     .data
-file_name db '014682900.txt',014682900
+file_name db '014682900.txt',0
 fn_len  equ $ - file_name
+msg db ' to Celcius is ', 13, 10
+msg_len equ $ - msg
 hexprefix	db "0x",null
 debugOK		db	"OK",null
 i db 0x00;
@@ -186,18 +188,19 @@ _start:		;;;;; BEGIN MAIN PROGRAM SECTION ;;;;;
 	mov [var2], al
 
 ;;;;;;;;;;;;;;;;;;;;; DO NOT MODIFY ANYTHING ABOVE THIS COMMENT!
-;create the file
+; program expects that var1 will hold a Celsius temperature value in hex
+; the Fahrenheit value will be computed and displayed
+	; C = F(5-32)/9
+	
+	;create the file
 	mov eax, 8
 	mov ebx, file_name
-	mov ecx, 0o666		; read and write by all
+	mov ecx, 0o644		; owner -rw, group owner/user -r
 	mov edx, fn_len
 	int 0x80				; call kernel
 	mov [fd_out], al	; filedescriptor is returned in the A register
-	; program expects that var1 will hold a Celsius temperature value in hex
-	; the Fahrenheit value will be computed and displayed
-  ; C = F(5-32)/9
-  mov byte[i], 0
 
+  mov byte[i], 0
 
   whileCheck:
   mov al, [var2]
@@ -206,43 +209,40 @@ _start:		;;;;; BEGIN MAIN PROGRAM SECTION ;;;;;
 	  mov eax, 0		; re-initialize the A register
 	  mov al , [var1]	; put var1 value into al
     sub al, 32    ; sub 32 from al
-    mov bl, 5     ; set up to multiply by 5
-    mul bl        ; al has been multiplied by 5
+	  mov bl, 5     ; set up to multiply by 5
+	  mul bl        ; al has been multiplied by 5
 
 	  mov bl, 9			; set up too divide al by 9
 	  div bl				; al has been divided by 9
 
-
-
-
-
-
-
-
-
-  ; write into the file
-
 	mov edi, var1
 	call print_hex_byte
-	mov ebx, [fd_out]	; file descriptor of the created file
-	mov eax,4			; system call number (sys_write)
-	int 0x80				; call kernel
+	mov edi, msgC
+		call print_string
+	mov [ans], al
+	mov edi, ans
+	call print_hex_byte
+	call print_nl
+	
+	mov edx, 1
+	mov ecx, var1
+		mov ebx, [fd_out]
+		mov eax, 4
+	int 0x80
 
-  mov edi, msgC
-  call print_string
-  mov ebx, [fd_out]	; file descriptor of the created file
-	mov eax,4			; system call number (sys_write)
-	int 0x80				; call kernel
+	mov edx, msg_len
+	mov ecx, msgC
+		mov ebx, [fd_out]
+		mov eax, 4
+	int 0x80
 
-  mov [ans], al	; put the Fahrenheit value into var2 so it can be displayed
-	mov edi,  ans	; pass address of var2 for print_hex_byte
-  call print_hex_byte
-  call print_nl		; print_nl
-  mov ebx, [fd_out]	; file descriptor of the created file
-	mov eax,4			; system call number (sys_write)
-	int 0x80				; call kernel
+	mov edx, 1
+	mov ecx, ans
+		mov ebx, [fd_out]
+		mov eax, 4
+	int 0x80
 
-    sub byte[var2], 0x01;
+    dec byte[var2];
     add byte[var1], 0x05;
     jmp whileCheck
   endwhile:
