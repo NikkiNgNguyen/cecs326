@@ -38,7 +38,7 @@ stderr		equ		3
 ; prints one ascii character to the console
 %macro print_char 1
 	mov eax, 4	;system call number (sys_write)
-	mov ebx, stdout	;file descriptor (stdout)
+	mov ebx, [fd_out]	;file descriptor (stdout)
 	mov ecx, %1		;address of data to print
 	mov edx, 1	;number of bytes to print
 	int 0x80	;do it!
@@ -59,19 +59,21 @@ stderr		equ		3
 SECTION     .data
 file_name db '014682900.txt',0
 fn_len  equ $ - file_name
-msg db ' to Celcius is ', 13, 10
+msg db ' to Celcius is '
 msg_len equ $ - msg
 hexprefix	db "0x",null
 debugOK		db	"OK",null
 i db 0x00;
 ans db 0x00;
 nl			db	0x0a,0x0d
+nl_len  equ $ - nl
 msg1		db	"8-bit variable 1 = ",null
 msg2		db	"8-bit variable 2 = ",null
 msgC  db  " to Celcius is ", null
 msg3		db	"8-bit product of variable 1 * variable 2 = ",null
 var1		db	0xff	; default value
 var2		db	0xff	; default value
+var3		db	0xff	; default value
 
 product		db	0xff	;0xff is default value
 
@@ -94,6 +96,7 @@ arg2hex		resb	1	;holds the hex value of second argument
 
 arg1ascii	resb	5	;holds the ascii version of first argument (4 characters and a null)
 arg2ascii	resb	5	;holds the ascii version of second argument (4 characters and a null)
+
 fd_out	resb 1
 fd_in		resb 1
 info		resb 30
@@ -191,60 +194,52 @@ _start:		;;;;; BEGIN MAIN PROGRAM SECTION ;;;;;
 ; program expects that var1 will hold a Celsius temperature value in hex
 ; the Fahrenheit value will be computed and displayed
 	; C = F(5-32)/9
-	
+
 	;create the file
 	mov eax, 8
 	mov ebx, file_name
 	mov ecx, 0o644		; owner -rw, group owner/user -r
 	mov edx, fn_len
 	int 0x80				; call kernel
+	
 	mov [fd_out], al	; filedescriptor is returned in the A register
 
-  mov byte[i], 0
-
-  whileCheck:
   mov al, [var2]
   cmp byte[i], al
-  je endwhile
+  jz endwhile
+
+	whileCheck:
+		mov edi, var1
+		call print_hex_byte
+
+		mov edx, msg_len
+		mov ecx, msg
+		mov ebx, [fd_out]
+		mov eax, 4
+		int 0x80
+
 	  mov eax, 0		; re-initialize the A register
 	  mov al , [var1]	; put var1 value into al
-    sub al, 32    ; sub 32 from al
-	  mov bl, 5     ; set up to multiply by 5
+		sub al, 32    ; sub 32 from al
+
+		mov bl, 5     ; set up to multiply by 5
 	  mul bl        ; al has been multiplied by 5
 
 	  mov bl, 9			; set up too divide al by 9
 	  div bl				; al has been divided by 9
 
-	mov edi, var1
-	call print_hex_byte
-	mov edi, msgC
-		call print_string
-	mov [ans], al
-	mov edi, ans
-	call print_hex_byte
-	call print_nl
-	
-	mov edx, 1
-	mov ecx, var1
-		mov ebx, [fd_out]
-		mov eax, 4
-	int 0x80
+		mov [var3], al
+		mov edi, var3
+		call print_hex_byte
+		call print_nl
 
-	mov edx, msg_len
-	mov ecx, msgC
-		mov ebx, [fd_out]
-		mov eax, 4
-	int 0x80
+  	dec byte[var2];
+  	add byte[var1], 0x05;
 
-	mov edx, 1
-	mov ecx, ans
-		mov ebx, [fd_out]
-		mov eax, 4
-	int 0x80
+		mov al, [var2]
+		cmp byte[i], al
+    jne whileCheck
 
-    dec byte[var2];
-    add byte[var1], 0x05;
-    jmp whileCheck
   endwhile:
   ; close the file
 	mov eax, 6
@@ -297,7 +292,7 @@ arg2Null:
 print_nl:
 pushRegisters
 	mov eax, 4	;system call number (sys_write) - p75 of Assembly Language Tutorial
-	mov ebx, 1	;file descriptor (stdout)
+	mov ebx, [fd_out]	;file descriptor (stdout)
 	mov ecx, nl	;address of data to print
 	mov edx, 2	;number of bytes to print
 	int 0x80	;do it!
@@ -310,7 +305,7 @@ popRegisters
 ;	returns		- nothing
 print_0x:
 	mov eax, 4			;system call number (sys_write) - p75 of Assembly Language Tutorial
-	mov ebx, 1			;file descriptor (stdout)
+	mov ebx, [fd_out]			;file descriptor (stdout)
 	mov ecx, hexprefix	;address of data to print
 	mov edx, 2			;number of bytes to print
 	int 0x80			;do it!
