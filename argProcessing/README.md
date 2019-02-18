@@ -49,5 +49,4 @@ _Examples of the remaining program features are not shown._
         * The script file will not have executable permissions when used on a native Linux system or Linux virtual machine.  To add executable permissions:
             * navigate to the folder where runMul2Add3.sh is located and type:
             ```
-            $ chmod u+x runMul2Add3.sh 
-        ```
+            $ chmod u+x runMul2Add3.sh
