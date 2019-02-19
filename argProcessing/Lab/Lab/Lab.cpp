@@ -13,14 +13,13 @@ int main( int argc, char ** argv ){
     int sum = 0;
     int length = argc - 1;
     float aAvg = 0.0;
+    cout << argc << endl;
     
-    int max = atoi(argv[1]);
-    int min = atoi(argv[1]);
     
     if(argc == 1){
         cout << "no arguments entered, I'm done \n" << endl;
     }
-    if((1 < argc) && ( argc < 4)){
+    else if((1 < argc) && ( argc < 4)){
         cout << "Please enter more than 3 numerical arguments \n" << endl;
     }
     else{
@@ -28,6 +27,8 @@ int main( int argc, char ** argv ){
             cout << "numbersArray["<< i << "] = " << atoi(argv[i+1]) << endl;
             sum = sum + atoi(argv[i+1]);
         }
+        int max = atoi(argv[1]);
+        int min = atoi(argv[1]);
         for (int j = 0; j < length; j++){
             if (atoi(argv[j+1]) > max){
                 max = atoi(argv[j+1]);
