@@ -10,11 +10,13 @@
 using namespace std;
 
 int main( int argc, char ** argv ){
-    int summation = 0;
+    int sum = 0;
     int length = argc - 1;
-    float arrayAverage = 0.0;
+    float aAvg = 0.0;
+    
     int max = atoi(argv[1]);
     int min = atoi(argv[1]);
+    
     if(argc == 1){
         cout << "no arguments entered, I'm done \n" << endl;
     }
@@ -24,7 +26,7 @@ int main( int argc, char ** argv ){
     else{
         for (int i = 0; i < length; i++){
             cout << "numbersArray["<< i << "] = " << atoi(argv[i+1]) << endl;
-            summation = summation + atoi(argv[i+1]);
+            sum = sum + atoi(argv[i+1]);
         }
         for (int j = 0; j < length; j++){
             if (atoi(argv[j+1]) > max){
@@ -34,11 +36,11 @@ int main( int argc, char ** argv ){
                 min = atoi(argv[j+1]);
             }
         }
-        arrayAverage = float(summation)/float(length);
-        cout << "The sum is " << summation << endl;
-        cout << "The average is " << arrayAverage << endl;
-        int arrayRange = max - min;
-        cout << "The range is " << arrayRange << endl;
+        aAvg = float(sum)/float(length);
+        cout << "The sum is " << sum << endl;
+        cout << "The average is " << aAvg << endl;
+        int aRange = max - min;
+        cout << "The range is " << aRange << endl;
     }
     exit( 0 );
     
