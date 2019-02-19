@@ -10,6 +10,7 @@ Make sure you are in the directory of the project
 
 ## Committing Files
 | Git Command | Description |
+| ------------- | ------------- |
 | `git status` | Check status |
 | `git add .` | Stages all the files in the current directory |
 | `git add *.[extension]` | Adds all files with the specific extension |
@@ -20,6 +21,7 @@ Make sure you are in the directory of the project
 
 ## Branching & Merging
 | Git Command | Description |
+| ------------- | ------------- |
 | `git branch` | List branches |
 | `git branch -a` | List all branches (local and remote) |
 | `git checkout -b [new branch]` | Creates and checks out new branch |
@@ -34,6 +36,7 @@ Make sure you are in the directory of the project
 
 ## Sharing & Updating Projects 
 | Git Command | Description |
+| ------------- | ------------- |
 | `git push origin [branch name]` | Push a branch to your remote repository |
 | `git push -u origin [branch name]` | Push changes to remote repository (and remember the branch) |
 | `git push` | Push changes to remote repository (remembered branch) |
