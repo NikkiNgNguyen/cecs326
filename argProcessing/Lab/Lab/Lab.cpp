@@ -12,17 +12,21 @@ using namespace std;
 int main( int argc, char ** argv ){
     int sum = 0;
     int length = argc - 1;
-    float aAvg = 0.0;
-    cout << argc << endl;
-    
+    float aAvg = 0.0;    
     
     if(argc == 1){
         cout << "no arguments entered, I'm done \n" << endl;
     }
-    else if((1 < argc) && ( argc < 4)){
+    else if((1 < argc) && ( argc < 3)){
         cout << "Please enter more than 3 numerical arguments \n" << endl;
     }
-    else{
+    else if((argc > 2) && (argc < 11)){
+        for (int x = 0; x < length; x++){
+            if((atoi(argv[x+1]) < (-100)) || ((atoi(argv[x+1]) > 100))){
+                cout << "arguments out of bounds, I'm done \n" << endl;
+                exit(0);
+            }
+        }
         for (int i = 0; i < length; i++){
             cout << "numbersArray["<< i << "] = " << atoi(argv[i+1]) << endl;
             sum = sum + atoi(argv[i+1]);
@@ -43,6 +47,10 @@ int main( int argc, char ** argv ){
         int aRange = max - min;
         cout << "The range is " << aRange << endl;
     }
+    else{
+        cout << "arguments out of bounds, I'm done \n" << endl;
+
+        }
     exit( 0 );
     
 }
