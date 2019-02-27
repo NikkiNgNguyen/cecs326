@@ -62,13 +62,11 @@ Provides authentication for your computer
 | `~` | Home directory |
 | `mkdir [directory name]` | Make directory |
 | `touch [file name]` | Create an empty file |
-|   |   |
-|   |   |
-|   |   |
-|   |   |
-|   |   |
-|   |   |
-|   |   |
-|   |   |
-|   |   |
-|   |   |
+
+## Create Executable File
+
+make sure you are in the directory of the file
+`gcc -o [tofilename.out] [CorC++filename.extension]` 
+
+execute the file
+`./tofilename.out`
