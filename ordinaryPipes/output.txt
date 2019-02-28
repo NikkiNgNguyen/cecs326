@@ -1,0 +1,62 @@
+nguyennikks@nguyennikks-VirtualBox:~/Desktop/github/cecs326/ordinaryPipes$ chmod u+x 64BitLinux_LabPipes.out
+nguyennikks@nguyennikks-VirtualBox:~/Desktop/github/cecs326/ordinaryPipes$ ./64BitLinux_LabPipes.out
+PARENT: Enter a message to send: hello
+PARENT, sending: hello
+PARENT: Enter a message to send: CHILD: value A = 0
+my child
+PARENT, sending: my
+CHILD: operation invalid!
+PARENT: Enter a message to send: PARENT, sending: child
+nguyennikks@nguyennikks-VirtualBox:~/Desktop/github/cecs326/ordinaryPipes$ ./64BitLinux_LabPipes.out
+PARENT: Enter a message to send: hello  
+PARENT, sending: hello
+PARENT: Enter a message to send: CHILD: value A = 0
+my
+PARENT, sending: my
+CHILD: operation invalid!
+PARENT: Enter a message to send: 0 
+PARENT, sending: 0
+nguyennikks@nguyennikks-VirtualBox:~/Desktop/github/cecs326/ordinaryPipes$ ./64BitLinux_LabPipes.out
+PARENT: Enter a message to send: wtf
+PARENT, sending: wtf
+PARENT: Enter a message to send: CHILD: value A = 0
+2
+PARENT, sending: 2
+CHILD: operation invalid!
+PARENT: Enter a message to send: what it do 
+PARENT, sending: what
+nguyennikks@nguyennikks-VirtualBox:~/Desktop/github/cecs326/ordinaryPipes$ ./64BitLinux_LabPipes.out
+PARENT: Enter a message to send: hello
+PARENT, sending: hello
+CHILD: value A = 0
+PARENT: Enter a message to send: hi
+PARENT, sending: hi
+CHILD: operation invalid!
+PARENT: Enter a message to send: h
+PARENT, sending: h
+nguyennikks@nguyennikks-VirtualBox:~/Desktop/github/cecs326/ordinaryPipes$ ./64BitLinux_LabPipes.out
+PARENT: Enter a message to send: hello
+PARENT, sending: hello
+PARENT: Enter a message to send: CHILD: value A = 0
+hello
+PARENT, sending: hello
+CHILD: operation invalid!
+PARENT: Enter a message to send: i am confuscious 
+PARENT, sending: i
+nguyennikks@nguyennikks-VirtualBox:~/Desktop/github/cecs326/ordinaryPipes$ ./64BitLinux_LabPipes.out
+PARENT: Enter a message to send: i am confuscious
+PARENT, sending: i
+CHILD: value A = 0
+PARENT: Enter a message to send: PARENT, sending: am
+CHILD: operation invalid!
+PARENT: Enter a message to send: PARENT, sending: confuscious
+nguyennikks@nguyennikks-VirtualBox:~/Desktop/github/cecs326/ordinaryPipes$ ./64BitLinux_LabPipes.out
+PARENT: Enter a message to send: 2
+PARENT, sending: 2
+PARENT: Enter a message to send: CHILD: value A = 2
+4
+PARENT, sending: 4
+CHILD: operation invalid!
+PARENT: Enter a message to send: 4
+PARENT, sending: 4
+
