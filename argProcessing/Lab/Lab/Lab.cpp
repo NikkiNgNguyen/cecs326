@@ -17,10 +17,10 @@ int main( int argc, char ** argv ){
     if(argc == 1){
         cout << "no arguments entered, I'm done \n" << endl;
     }
-    else if((1 < argc) && ( argc < 3)){
+    else if((1 < argc) && ( argc <= 3)){
         cout << "Please enter more than 3 numerical arguments \n" << endl;
     }
-    else if((argc > 2) && (argc < 11)){
+    else if((argc > 3) && (argc < 11)){
         for (int x = 0; x < length; x++){
             if((atoi(argv[x+1]) < (-100)) || ((atoi(argv[x+1]) > 100))){
                 cout << "arguments out of bounds, I'm done \n" << endl;
@@ -52,4 +52,5 @@ int main( int argc, char ** argv ){
 
         }
     exit( 0 );
+    
 }
