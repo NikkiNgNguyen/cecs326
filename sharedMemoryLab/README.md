@@ -1,3 +1,4 @@
+# Lab: Shared Memory Hailstone Sequence Challenge
 Write a C++ program which will engage in a repeated challenge / response scenario through a shared memory region with a "Challenge server" program.  The Challenge server program will be run first, your program must read a short integer value from shared memory and write an appropriate short integer value back to the shared memory region.  The short integer value that will be written back to the shared memory region will be the next value in the Hailstone Sequence.  The Hailstone Sequence begins with some positive whole number value and will eventually converge to 1, the program to receive the value 1 is the loser!
 
 * Algorithm for the Hailstone Sequence is given as follows:
@@ -92,4 +93,4 @@ The Challenge server will validate the data sent to it by the Challenger program
 Running the attached CheatingChallenger executable will cause Challenge server to issue cheating allegations!
 If needed, the Challenger program or Challenge server program can be forcibly terminated by using CTRL+C
 forcibly terminating the Challenger and Challenge server programs can cause the shared memory region to remain, use the attached CLEANsharedMem.cpp to remove the left over shared memory region.
-Read these instructions carefully and understand all information contained in this description.  Also see: Reading and Writing Integers with shared memory
+Read these instructions carefully and understand all information contained in this description.  Also see: [Reading and Writing Integers with shared memory](r_and_w_int.md)
