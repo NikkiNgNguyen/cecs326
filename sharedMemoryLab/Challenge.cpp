@@ -13,17 +13,16 @@
 #include <iostream>
 using namespace std;
 
-int main(){ //int argc, char * argv[]
-	short newValue = 0;
-	short value = 50;	
+int main(int argc, char * argv[]){
+
 	const int SIZE = 128;
 	const char *name = "Challenge"; //name of shared memory region
-
+	//char messageBuffer[5];
 	int shm_fd; //file descriptor variable
 	void *ptr; //shared memory pointer
-
+	bool anotherRound = true;
 	//create, truncate shared memory region
-	//shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666);
+	shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666);
 	shm_fd = shm_open(name, O_RDWR, 0666);
 	ftruncate(shm_fd, SIZE);
 	//point to shared memory region
@@ -37,8 +36,10 @@ int main(){ //int argc, char * argv[]
 		cout<< "2: ERROR: Map failed\n";
 		exit(-1);
 	}
+	int flag = 0;
+	short newValue = 0;
+	short value = 50;
 	else{
-		
 		cout << "2: FIRST Value Received: " << value << endl;
 	}
 	//sequence = 8; //test
@@ -51,22 +52,25 @@ int main(){ //int argc, char * argv[]
 			}
 		} //end of while(oldData)
 		value = newValue;
-		cout << "2: Value to write into shared memory: " << newValue<< endl;
+		cout << "2: Value to write into shared memory: " << value<< endl;
 		cout << "2: Awaiting new data in shared memory region" << endl;
-		cout << "2: Value Received: " <<newValue<< endl;
+		cout << "2: Value Received: " <<value<< endl;
 		//Hailstone sequence
-		if(newValue % 2 == 1){ //if odd
-			newValue = 3 * newValue + 1;
-		}
-		else{ //if even
-			newValue = newValue/2;
-		}
 
 		//exit the loop
-		if((newValue == 1) ||(newValue == 2)){
+		if((value == 1) ||(value == 2)){
+			flag = 1;
+			*((short *)ptr) = value;
 			break;
+		}else if(value % 2 == 1){ //if odd
+			value = (3 * value) + 1;
+			*((short *)ptr) = value;
 		}
-	}while((newValue != 1) || (newValue != 2));
+		else{ //if even
+			value = value/2;
+			*((short *)ptr) = value;
+		}
+	}while(flag == 0);
 	//win
 	if(newValue == 2){
 		cout << "2: I WIN!" << endl;
@@ -79,7 +83,6 @@ int main(){ //int argc, char * argv[]
 		cout << "2: ERROR: Error removing shared memory region" << name << endl;
 		exit(-1);
 	}
-	else
-		cout << "2: Successfully closed shared memory region" << endl;
+	cout << "2: Successfully closed shared memory region" << endl;
 	return 0;
 }
