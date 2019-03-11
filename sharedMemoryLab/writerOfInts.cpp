@@ -31,10 +31,10 @@ int main(int argc, char * argv[]){
 	// point to shared memory region
 	ptr = mmap(0, SIZE, PROT_WRITE | PROT_READ, MAP_SHARED, shm_fd, 0);
 	// sequence = 8;	// test
-
+	short x;
 	do{
 		cout << "Input a numerical positive short integer value to send to shared memory: ";
-		short x;
+
 		cin >> x;
 		cout << "1: Value to write into shared memory: " << x << endl;
 		*((short *)ptr) = x;			

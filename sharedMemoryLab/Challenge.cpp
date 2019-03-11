@@ -13,7 +13,9 @@
 #include <iostream>
 using namespace std;
 
-int main(int argc, char * argv[]){
+int main(){ //int argc, char * argv[]
+	short newValue = 0;
+	short value = 50;	
 	const int SIZE = 128;
 	const char *name = "Challenge"; //name of shared memory region
 
@@ -25,7 +27,7 @@ int main(int argc, char * argv[]){
 	shm_fd = shm_open(name, O_RDWR, 0666);
 	ftruncate(shm_fd, SIZE);
 	//point to shared memory region
-	ptr = mmap(0, SIZE, PROT_WRITE | PROT_HEAD, MAP_SHARED, shm_fd, 0);
+	ptr = mmap(0, SIZE, PROT_WRITE | PROT_READ, MAP_SHARED, shm_fd, 0);
 
 	if(shm_fd == -1){
 		cout << "2: ERROR: Opening shared memory failed\n";
@@ -36,8 +38,7 @@ int main(int argc, char * argv[]){
 		exit(-1);
 	}
 	else{
-		short newValue = 0;
-		short value = 50;
+		
 		cout << "2: FIRST Value Received: " << value << endl;
 	}
 	//sequence = 8; //test
@@ -58,7 +59,7 @@ int main(int argc, char * argv[]){
 			newValue = 3 * newValue + 1;
 		}
 		else{ //if even
-			newValue = newValue/2
+			newValue = newValue/2;
 		}
 
 		//exit the loop
