@@ -13,7 +13,7 @@
 #include <iostream>
 using namespace std;
 
-int main(int argc, char * argv[]){
+int main(/*int argc, char * argv[]*/){
 
 	const int SIZE = 128;
 	const char *name = "Challenge"; //name of shared memory region
@@ -27,6 +27,9 @@ int main(int argc, char * argv[]){
 	ftruncate(shm_fd, SIZE);
 	//point to shared memory region
 	ptr = mmap(0, SIZE, PROT_WRITE | PROT_READ, MAP_SHARED, shm_fd, 0);
+	short newValue = 0;
+	short value = 0;
+	short v = 0;
 
 	if(shm_fd == -1){
 		cout << "2: ERROR: Opening shared memory failed\n";
@@ -36,11 +39,14 @@ int main(int argc, char * argv[]){
 		cout<< "2: ERROR: Map failed\n";
 		exit(-1);
 	}
-	int flag = 0;
-	short newValue = 0;
-	short value = 50;
+	
 	else{
-		cout << "2: FIRST Value Received: " << value << endl;
+		v = *((short*)ptr);
+		cout << "2: FIRST Value Received: " << v << endl;
+		if(value == 2){
+			cout << "2: CHEATER!" << endl;
+			exit(-1);
+		}
 	}
 	//sequence = 8; //test
 	do{
@@ -58,19 +64,21 @@ int main(int argc, char * argv[]){
 		//Hailstone sequence
 
 		//exit the loop
-		if((value == 1) ||(value == 2)){
-			flag = 1;
+		if((value == 1) || (value == 2)){
+			//flag = 1;
 			*((short *)ptr) = value;
 			break;
 		}else if(value % 2 == 1){ //if odd
 			value = (3 * value) + 1;
-			*((short *)ptr) = value;
+			//*((short *)ptr) = value;
 		}
 		else{ //if even
 			value = value/2;
-			*((short *)ptr) = value;
+			
 		}
-	}while(flag == 0);
+		*((short *)ptr) = value;
+		
+	}while((value != 1) || (value != 2));
 	//win
 	if(newValue == 2){
 		cout << "2: I WIN!" << endl;
@@ -78,7 +86,7 @@ int main(int argc, char * argv[]){
 	else if(newValue == 1){
 		cout <<"2: I lose!" << endl;
 	}
-	cout << "reader: Attempting to close the shared memory region\n";
+	cout << "2: Attempting to close the shared memory region\n";
 	if(shm_unlink(name) == -1 ){
 		cout << "2: ERROR: Error removing shared memory region" << name << endl;
 		exit(-1);
