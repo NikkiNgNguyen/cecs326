@@ -61,7 +61,7 @@ int main(){
 			value = value/2;
 			*((short *)ptr) = value;
 		}
-		cout << "2: Value to write into shared memory" << value << endl;
+		cout << "2: Value to write into shared memory: " << value << endl;
 		cout << "2: Awaiting new data in shared memory region" << endl;
 	}
 
@@ -87,7 +87,7 @@ int main(){
 			value = value/2;
 			*((short *)ptr) = value;
 		}
-		
+
 		cout << "2: Value to write into shared memory: " << value<< endl;
 		cout << "2: Awaiting new data in shared memory region" << endl;
 
@@ -101,7 +101,7 @@ int main(){
 	}
 	cout << "2: Attempting to close the shared memory region\n";
 	if(shm_unlink(name) == -1 ){
-		cout << "2: ERROR: Error removing shared memory region" << name << endl;
+		cout << "2: ERROR: Error removing shared memory region " << name << endl;
 		exit(-1);
 	}
 	cout << "2: Successfully closed shared memory region" << endl;
