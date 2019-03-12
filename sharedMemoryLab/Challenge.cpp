@@ -13,20 +13,22 @@
 #include <iostream>
 using namespace std;
 
-int main(/*int argc, char * argv[]*/){
+int main(){
 
 	const int SIZE = 128;
 	const char *name = "Challenge"; //name of shared memory region
-	//char messageBuffer[5];
+
 	int shm_fd; //file descriptor variable
 	void *ptr; //shared memory pointer
-	bool anotherRound = true;
+
 	//create, truncate shared memory region
 	shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666);
 	shm_fd = shm_open(name, O_RDWR, 0666);
 	ftruncate(shm_fd, SIZE);
+
 	//point to shared memory region
 	ptr = mmap(0, SIZE, PROT_WRITE | PROT_READ, MAP_SHARED, shm_fd, 0);
+
 	short newValue = 0;
 	short value = 0;
 	short v = 0;
@@ -36,19 +38,33 @@ int main(/*int argc, char * argv[]*/){
 		exit(-1);
 	}
 	else if(ptr == MAP_FAILED){
-		cout<< "2: ERROR: Map failed\n";
+		cout << "2: ERROR: Map failed\n";
 		exit(-1);
 	}
-	
 	else{
-		v = *((short*)ptr);
-		cout << "2: FIRST Value Received: " << v << endl;
-		if(value == 2){
-			cout << "2: CHEATER!" << endl;
-			exit(-1);
+		bool oldData = true;
+		while(oldData){
+			newValue = *((short *)ptr);
+			if(newValue != value){
+				oldData = false;
+			}
 		}
+
+		value = newValue;
+		cout << "2: FIRST Value Received: " << value << endl;
+
+		if(value % 2 == 1){
+			value = (3 * value) + 1;
+			*((short *)ptr) = value;
+		}
+		else if (value % 2 == 0){
+			value = value/2;
+			*((short *)ptr) = value;
+		}
+		cout << "2: Value to write into shared memory" << value << endl;
+		cout << "2: Awaiting new data in shared memory region" << endl;
 	}
-	//sequence = 8; //test
+
 	do{
 		bool oldData = true;
 		while(oldData){
@@ -56,28 +72,25 @@ int main(/*int argc, char * argv[]*/){
 			if(newValue != value ){
 				oldData = false;
 			}
-		} //end of while(oldData)
-		value = newValue;
-		cout << "2: Value to write into shared memory: " << value<< endl;
-		cout << "2: Awaiting new data in shared memory region" << endl;
-		cout << "2: Value Received: " <<value<< endl;
-		//Hailstone sequence
+		}
 
-		//exit the loop
+		value = newValue;
+		cout << "2: Value Received: " <<value<< endl;
 		if((value == 1) || (value == 2)){
-			//flag = 1;
 			*((short *)ptr) = value;
 			break;
 		}else if(value % 2 == 1){ //if odd
 			value = (3 * value) + 1;
-			//*((short *)ptr) = value;
+			*((short *)ptr) = value;
 		}
 		else{ //if even
 			value = value/2;
-			
+			*((short *)ptr) = value;
 		}
-		*((short *)ptr) = value;
 		
+		cout << "2: Value to write into shared memory: " << value<< endl;
+		cout << "2: Awaiting new data in shared memory region" << endl;
+
 	}while((value != 1) || (value != 2));
 	//win
 	if(newValue == 2){
