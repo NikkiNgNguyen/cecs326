@@ -38,7 +38,7 @@ int main(){
 
   cout << "Challenger, checking queue...\n";
   if(msgrcv(qid, (struct msgbuf *) &msg, size, 0, 0) < 0){
-    cout "Error: " << msg.mtype << endl;
+    cout <<"Error: " << msg.mtype << endl;
   }
   else{
     bool oldData = true;
@@ -77,7 +77,7 @@ int main(){
       cout "Error " << msg.mtype << endl;
     }
     else{
-      value = msg.message
+      value = msg.message;
       cout << "Challenger, Received: " << msg.message << "of type " << msg.mtype << endl;
       if ((value == 1) || (value == 2)){
         msg.message = value;
@@ -94,6 +94,7 @@ int main(){
       cout << "Challenger, Sending: " << value << endl;
       cout << "Challenger, checking queue...\n";
 
+	}
   }while((value != 1) || (value != 2));
   if (newValue == 2){
     cout << "Challenger, Failed Removing" << endl;
