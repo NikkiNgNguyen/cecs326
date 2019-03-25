@@ -22,87 +22,58 @@ int main(){
     }
   }
   else{
-    cout << "Challenger, Q access SUCCESS!\n";
+    cout << "Challenger, Q create SUCCESS!\n";
   }
   struct buf{
     long mtype;
-    char message[5];
+    char g[5];
   };
+
   buf msg;
 
   int size = sizeof(msg) - sizeof(long);
   msg.mtype = 0;
-  long value = 0;
-  long newValue = 0;
-  strcpy (msg.message, "From Challenger");
 
   cout << "Challenger, checking queue...\n";
-  if(msgrcv(qid, (struct msgbuf *) &msg, size, 0, 0) < 0){
-    cout <<"Error: " << msg.mtype << endl;
+  msgrcv(qid, (struct msgbuf *) &msg, size, msg.mtype, 0);
+  cout << "Challenger, Received: " << msg.mtype << endl;
+  if (msg.mtype % 2 == 1){
+    msg.mtype = (3 * msg.mtype) + 1;
   }
-  else{
-    bool oldData = true;
-    while(oldData){
-      newValue = msg.message;
-      if(newValue != value){
-        oldData = false;
-      }
-    }
-    value = newValue;
-    cout << "Challenger, Received: " << msg.message << "of type " << msg.mtype << endl;
-    value = msg.message
-    if (value % 2 == 1){
-      value = (3 * value) + 1;
-      msg.message = value;
-    }
-    else if (value % 2 == 0){
-      value = value/2;
-      msg.message = value;
-    }
-    cout << "Challenger, Sending: " << value << endl;
-    cout << "Challenger, checking queue...\n";
+  else if (msg.mtype % 2 == 0){
+    msg.mtype = msg.mtype/2;
+  }
+  cout << "Challenger, Sending: " << msg.mtype << endl;
+	if(msgsnd(qid, (struct msgbuf *) &msg, size, 0) < 0){
+		cout << "Challenger, send fail\n";
+	}
 
-  }
   do{
-    bool oldData = true;
-    while(oldData){
-      newValue = msg.message;
-      if(newValue != value){
-        oldData = false;
-      }
+	if (msg.mtype % 2 == 1){
+      msg.mtype = (3 * msg.mtype) + 1;
     }
-
-    value = newValue;
-    if(msgrcv(qid, (struct msgbuf *) &msg, size, 0, 0) < 0){
-      cout "Error " << msg.mtype << endl;
+    else if (msg.mtype % 2 == 0){
+      msg.mtype = msg.mtype/2;
     }
-    else{
-      value = msg.message;
-      cout << "Challenger, Received: " << msg.message << "of type " << msg.mtype << endl;
-      if ((value == 1) || (value == 2)){
-        msg.message = value;
-        break;
+	cout << "Chalenger, Checking queue...\n";
+	msgrcv( qid, (struct msgbuf * ) &msg, size, msg.mtype, 0);
+	
+      cout << "Challenger, Received: " << msg.mtype << endl;
+      if (msg.mtype % 2 == 1){
+        msg.mtype = (3 * msg.mtype) + 1;
       }
-      else if (value % 2 == 1){
-        value = (3 * value) + 1;
-        msg.message = value;
+      else if (msg.mtype % 2 == 0){
+        msg.mtype = msg.mtype/2;
       }
-      else if (value % 2 == 0){
-        value = value/2;
-        msg.message = value;
-      }
-      cout << "Challenger, Sending: " << value << endl;
-      cout << "Challenger, checking queue...\n";
+      cout << "Challenger, Sending: " << msg.mtype << endl;
 
-	}
-  }while((value != 1) || (value != 2));
-  if (newValue == 2){
-    cout << "Challenger, Failed Removing" << endl;
-  }
-  else if(newValue == 1){
-		cout <<"Challenger, Removing Q\n" << endl;
-	}
-  if( msgctl (qid, IPC_RMID, NULL) < 0 )
+	if(msgsnd(qid, (struct msgbuf *) &msg, size, 0) < 0){
+	      cout << "Challenger, send fail\n";
+    	}
+  }while(msg.mtype != 1);
+	
+	cout << "Challenger, Removing Q\n";
+  if( msgctl (qid, IPC_RMID, NULL) )
 	    cout << "Challenger, Q remove FAIL!\n";
   else
 	    cout << "Challenger, Q remove SUCCESS!\n";
