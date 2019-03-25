@@ -33,13 +33,22 @@ int main(){
   int size = sizeof(msg) - sizeof(long);
   msg.mtype = 0;
   long value = 0;
+  long newValue = 0;
   strcpy (msg.message, "From Challenger");
 
   cout << "Challenger, checking queue...\n";
   if(msgrcv(qid, (struct msgbuf *) &msg, size, 0, 0) < 0){
-    cout "Error " << msg.mtype << endl;
+    cout "Error: " << msg.mtype << endl;
   }
   else{
+    bool oldData = true;
+    while(oldData){
+      newValue = msg.message;
+      if(newValue != value){
+        oldData = false;
+      }
+    }
+    value = newValue;
     cout << "Challenger, Received: " << msg.message << "of type " << msg.mtype << endl;
     value = msg.message
     if (value % 2 == 1){
@@ -55,6 +64,15 @@ int main(){
 
   }
   do{
+    bool oldData = true;
+    while(oldData){
+      newValue = msg.message;
+      if(newValue != value){
+        oldData = false;
+      }
+    }
+
+    value = newValue;
     if(msgrcv(qid, (struct msgbuf *) &msg, size, 0, 0) < 0){
       cout "Error " << msg.mtype << endl;
     }
