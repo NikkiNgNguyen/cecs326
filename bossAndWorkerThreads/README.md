@@ -25,20 +25,20 @@
 `./workers.out 2 3 10 11 12 2 100 20`
 
 ---Explanation of command line argument tokens: <br />
-------2 (the leftmost 2 ) is the number of workers to be created ( worker 1 and worker 2 )
-------3 is the number of integers worker 1's data set
----------integers in worker 1's data set are 10, 11, and 12
-------2 is the number of integers in worker 2's data set
----------integers in worker 2's data set are 100 and 20
-------After Creation of worker threads the boss receives integer inputs through stdin to make the following actions occur
----------if user inputs 0, all workers will output their data sets
----------if user inputs 1, worker 1 will output it's data set
----------if user inputs -1, worker 1 will print it's worker number and exit
----------if user inputs 2, worker 2 will output it's data set
----------if user inputs -2, worker 2 will print it's worker number and exit
-------------the user input value is used by boss thread to send a condition signal or cancel request to a worker thread
----------if a user inputs some integer who's absolute value doesn't correspond to an valid worker thread ID, then print an ERROR message
-------once all worker threads exit, then the boss will exit causing main thread to exit
+------2 (the leftmost 2 ) is the number of workers to be created ( worker 1 and worker 2 ) <br />
+------3 is the number of integers worker 1's data set <br />
+---------integers in worker 1's data set are 10, 11, and 12 <br />
+------2 is the number of integers in worker 2's data set <br />
+---------integers in worker 2's data set are 100 and 20 <br />
+------After Creation of worker threads the boss receives integer inputs through stdin to make the following actions occur <br />
+---------if user inputs 0, all workers will output their data sets <br />
+---------if user inputs 1, worker 1 will output it's data set <br />
+---------if user inputs -1, worker 1 will print it's worker number and exit <br />
+---------if user inputs 2, worker 2 will output it's data set <br />
+---------if user inputs -2, worker 2 will print it's worker number and exit <br />
+------------the user input value is used by boss thread to send a condition signal or cancel request to a worker thread <br />
+---------if a user inputs some integer who's absolute value doesn't correspond to an valid worker thread ID, then print an ERROR message <br />
+------once all worker threads exit, then the boss will exit causing main thread to exit <br />
 
 ## Starter code is given as follows:
 ![starterCode_include](1.png)
