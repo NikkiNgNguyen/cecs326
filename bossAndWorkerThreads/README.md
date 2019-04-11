@@ -8,8 +8,8 @@
 ### Launch Program with command line arguments to be interpreted as follows:
 
 1st argument: number of worker sub threads for the main thread to create
----remaining arguments will be in groups where:
-------Xi, DE0, DE1, ...DEn
+~---remaining arguments will be in groups where:
+~------Xi, DE0, DE1, ...DEn
 ---------Xi: worker i will have X integer Data Elements in it's set
 ---------DE0, DE1, ...DEn: set of integer Data Elements from Data Element 0 to Data Element n
 ------------each data element will be a short integer
