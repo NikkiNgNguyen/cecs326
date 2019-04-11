@@ -49,4 +49,4 @@
 ## Use the following flow charts to create the boss and worker threads
 
 ![flow_boss](5.png)
-![flow_worker](6.png)
+![flow_worker](6.jpg)
