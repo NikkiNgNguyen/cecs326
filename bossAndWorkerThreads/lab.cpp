@@ -78,7 +78,7 @@ void *boss( void *param ){
         continue;
     }
     }
-    else if( (input < 0) && ((-input) <= *(short*)param){
+    else if((input < 0) && ((-input) <= *(short*)param)){
       input = -input;
       if(workerRunning[input-1]){
         cout << "Canceling worker " << input << endl;
@@ -97,7 +97,7 @@ void *boss( void *param ){
     cout << "Error: Invalid Entry\n" << endl;
     continue;
   }while(runningWorkers == true);
-  cout << "BOSS exits!\n"<< endl;
+  cout << "BOSS exits!\n";
   pthread_exit(0);
 }
 //Worker Info Management Class
