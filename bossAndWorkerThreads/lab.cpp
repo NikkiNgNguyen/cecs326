@@ -29,15 +29,14 @@ void *worker( void *param ){
   WorkerInfo myInfo(*(WorkerInfo*)param);
   cout << "Worker Thread " << " myInfo.getWorkerID() " << " Running!\n" <<endl;
   signify++;
-  pthread_cleanup_push(cleanupHandler, NULL)
+  pthread_cleanup_push(cleanupHandler, NULL);
   while(pthread_mutex_unlock( &theMutex ) > 0){
     if(pthread_mutex_unlock( &theMutex ) == 1){
       pthread_cond_wait(*tEnable[myInfo.getWorkerID()-1], &theMutex);
       myInfo.showDataSet();
     }
-    else{
+    else
       pthread_cleanup_pop(cleanup_pop_arg);
-    }
   }
 }
 
@@ -55,7 +54,7 @@ void *boss( void *param ){
   cout << "Enter a number of 1 to " << *(short *)param << " to make a thread print it's data set\n"
        << "Enter the negated value of a worker thread to cancel that thread\n"
        << "Enter 0 to make all threads output their data sets\n" << endl;
-  cin >> input >> endl;
+  cin >> input;
   while(runningWorkers){
     if(input == 0){
       i = 0
@@ -94,9 +93,9 @@ void *boss( void *param ){
           cout << "Worker " << input << " already canceled\n" <<endl;
         }
       }
-        else{
-          cout << "Error: Invalid Entry\n" << endl;
-        }
+      else{
+        cout << "Error: Invalid Entry\n" << endl;
+      }
   }
   cout << "BOSS exits!\n"<< endl;
   pthread_exit(0);
