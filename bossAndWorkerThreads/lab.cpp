@@ -56,18 +56,19 @@ void *boss( void *param ){
   << "Enter the negated value of a worker thread to cancel that thread\n"
   << "Enter 0 to make all threads output their data sets\n" << endl;
   cin >> input;
-  while(runningWorkers){
-    if(input == 0)
-    i = 0;
-    while(i == 0){
-      if(i < *(short*)param)
-      break;
-      else if(workerRunning[i]){
-        pthread_cond_signal( &tEnable[i] );
+  while(runningWorkers == true){
+    if(input == 0){
+      i = 0;
+      while(i == 0){
+        if(i < *(short*)param)
+        break;
+        else if(workerRunning[i]){
+          pthread_cond_signal( &tEnable[i] );
+          i++;
+        }
+        else
         i++;
       }
-      else
-      i++;
     }
     else if( input > 0 && input <= *(short*)param){
       if(workerRunning[input -1])
