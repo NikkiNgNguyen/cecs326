@@ -161,7 +161,7 @@ void *boss( void *param ){
     if(input == 0){
       i = 0;
       while(i < *(short*)param){
-        if(workerRunning[i] == true){
+        if(workerRunning[i]){
           pthread_cond_signal( &tEnable[i] );
         }
         i++;
@@ -170,7 +170,7 @@ void *boss( void *param ){
       continue;
     }
     else if( (input > 0) && (input <= *(short*)param)){
-      if(workerRunning[input -1] == true){
+      if(workerRunning[input -1]){
         pthread_cond_signal( &tEnable[input-1]);
         //runningWorkers = true;
         continue;
@@ -182,7 +182,7 @@ void *boss( void *param ){
     }
     else if((input < 0) && ((-input) <= *(short*)param)){
       input = -input;
-      if(workerRunning[input-1] == true){
+      if(workerRunning[input-1]){
         cout << "Canceling worker " << input << endl;
         cleanup_pop_arg = input;
         pthread_cancel(tids[input-1]);
@@ -197,7 +197,7 @@ void *boss( void *param ){
     }
     cout << "Error: Invalid Entry\n" << endl;
     continue;
-  }while(runningWorkers == true);
+  }while(runningWorkers);
   cout << "BOSS exits!\n";
   pthread_exit(0);
 }
