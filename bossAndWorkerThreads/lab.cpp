@@ -165,7 +165,7 @@ void *boss( void *param ){
         }
         i++;
       }
-      runningWorkers = true;
+      //runningWorkers = true;
       continue;
     }
     else if( (input > 0) && (input <= *(short*)param)){
