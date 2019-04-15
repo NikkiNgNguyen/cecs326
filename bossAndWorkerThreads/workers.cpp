@@ -19,13 +19,11 @@ theMutex; //mutex variable
 static int cleanup_pop_arg = 0;
 static void cleanupHandler( void *arg ){
   cout << "Worker " << cleanup_pop_arg << " cleaning up and exiting\n" "Worker";
-  if( pthread_mutex_unlock( &theMutex ) != 0 ){
+  if( pthread_mutex_unlock( &theMutex ) != 0 )
     cout << "UHOH!\n";
-  }
 }
 
 short signify = 0; //thread launch delay variable
-
 
 //Worker Info Management Class
 
@@ -38,9 +36,8 @@ public:
   :workerID( wi.workerID ),
   sizeOfDataSet( wi.sizeOfDataSet ){
     dataSet = new short[ sizeOfDataSet ];
-    for( int i = 0; i < sizeOfDataSet; i++ ){
+    for( int i = 0; i < sizeOfDataSet; i++ )
       dataSet[ i ] = wi.dataSet[ i ];
-    }
   }
 
   WorkerInfo( short wid, short sods )
@@ -50,9 +47,8 @@ public:
     if( size != sizeOfDataSet ){
       cout << "\tsizes not equal\n";
       sizeOfDataSet = size;
-      if( dataSet != nullptr ){
+      if( dataSet != nullptr )
         delete [] dataSet;
-      }
       dataSet = new short [ size ];
     }
     if( dataSet == nullptr ){
@@ -60,16 +56,14 @@ public:
       dataSet = new short [ size ];
     }
     cout << "\tinitializing dataset\n";
-    for( int i = 0; i < sizeOfDataSet; i++ ){
+    for( int i = 0; i < sizeOfDataSet; i++ )
       dataSet[ i ] = sA[ i ];
-    }
   }
 
   void showDataSet( ){
     cout << "worker " << workerID << " showing data:\n";
-    for( int i = 0; i < sizeOfDataSet; i++ ){
+    for( int i = 0; i < sizeOfDataSet; i++ )
       cout << '\t' << dataSet[ i ] << endl;
-    }
   }
 
   short getWorkerID(){ return workerID; }
@@ -123,9 +117,9 @@ int main( int argc, char ** argv ){
   cout << "Main thread blocking until boss thread finishes\n\n";
   pthread_join( bossTid, NULL );
   cout << "\n\nMain thread unblocked and outta here\n\n";
-  for( int i = 0; i < numThreads; i++ ){
+  for( int i = 0; i < numThreads; i++ )
     pthread_cond_destroy( &tEnable[ i ] );
-  }
+
   pthread_mutex_destroy( &theMutex );
   delete [ ] tids;  //deallocate heap memory
   delete [ ] tEnable; //deallocate heap memory
