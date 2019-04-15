@@ -169,9 +169,9 @@ void *boss( void *param ){
       continue;
     }
     else if( (input > 0) && (input <= *(short*)param)){
-      if(workerRunning[input -1]){
+      if(workerRunning[input -1] == true){
         pthread_cond_signal( &tEnable[input-1]);
-        runningWorkers == true;
+        runningWorkers = true;
         continue;
       }
       else{
