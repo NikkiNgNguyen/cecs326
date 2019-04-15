@@ -171,7 +171,7 @@ void *boss( void *param ){
     else if( (input > 0) && (input <= *(short*)param)){
       if(workerRunning[input -1]){
         pthread_cond_signal( &tEnable[input-1]);
-        runningWorkers++;
+        runningWorkers == true;
         continue;
       }
       else{
@@ -189,12 +189,11 @@ void *boss( void *param ){
         runningWorkers--;
         continue;
       }
+    }
       else{
         cout << "Worker " << input << " already canceled\n" <<endl;
         continue;
       }
-
-    }
     cout << "Error: Invalid Entry\n" << endl;
     continue;
   }while(runningWorkers == true);
