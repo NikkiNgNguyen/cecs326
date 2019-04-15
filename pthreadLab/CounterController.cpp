@@ -15,7 +15,7 @@ void *countDownThread( void *param );
 bool flag = true;
 
 int main( int argc, char ** argv){
-
+    
   pthread_t tid_reader, tid_evenChecker, tid_countDownThread;
 	pthread_attr_t attr;
 	pthread_attr_init( &attr );
