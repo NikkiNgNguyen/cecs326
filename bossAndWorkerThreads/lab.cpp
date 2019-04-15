@@ -118,12 +118,14 @@ int main( int argc, char ** argv ){
   cout << "Main thread blocking until boss thread finishes\n\n";
   pthread_join( bossTid, NULL );
   cout << "\n\nMain thread unblocked and outta here\n\n";
-  for( int i = 0; i < numThreads; i++ )
-  pthread_cond_destroy( &tEnable[ i ] );
+  for( int i = 0; i < numThreads; i++ ){
+    pthread_cond_destroy( &tEnable[ i ] );
+  }
   pthread_mutex_destroy( &theMutex );
   delete [ ] tids;  //deallocate heap memory
   delete [ ] tEnable; //deallocate heap memory
 }
+
 void *worker( void *param ){
   WorkerInfo myInfo(*(WorkerInfo*)param);
   cout << "Worker Thread " <<  myInfo.getWorkerID()  << " Running!\n";
@@ -160,7 +162,7 @@ void *boss( void *param ){
     if(input == 0){
       i = 0;
       while(i < *(short*)param){
-        if(workerRunning[i]==true){
+        if(workerRunning[i]){
           pthread_cond_signal( &tEnable[i] );
         }
         i++;
@@ -169,9 +171,9 @@ void *boss( void *param ){
       continue;
     }
     else if( (input > 0) && (input <= *(short*)param)){
-      if(workerRunning[input -1] == true){
+      if(workerRunning[input -1]){
         pthread_cond_signal( &tEnable[input-1]);
-        runningWorkers = true;
+        //runningWorkers = true;
         continue;
       }
       else{
@@ -193,10 +195,10 @@ void *boss( void *param ){
         cout << "Worker " << input << " already canceled\n" <<endl;
         continue;
       }
+    }
     cout << "Error: Invalid Entry\n" << endl;
     continue;
-  }
-}while(runningWorkers == true);
+}while(runningWorkers);
   cout << "BOSS exits!\n";
   pthread_exit(0);
 }
