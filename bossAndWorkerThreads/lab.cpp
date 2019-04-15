@@ -152,23 +152,22 @@ void *boss( void *param ){
   cout << "Enter a number of 1 to " << *(short *)param << " to make a thread print it's data set\n"
   << "Enter the negated value of a worker thread to cancel that thread\n"
   << "Enter 0 to make all threads output their data sets\n" << endl;
+  int input;
 
   do{
-    int input;
     cout << " > ";
     cin >> input;
     if(input == 0){
       i = 0;
       while(i < *(short*)param){
-        if(workerRunning[i]){
+        if(workerRunning[i]==true){
           pthread_cond_signal( &tEnable[i] );
         }
         i++;
       }
-      continue;
     }
     else if( (input > 0) && (input <= *(short*)param)){
-      if(workerRunning[input -1] == true){
+      if(workerRunning[input -1]){
         pthread_cond_signal( &tEnable[input-1]);
         continue;
       }
