@@ -49,7 +49,7 @@ void *boss( void *param ){
 
   while(i < *(short*)param){
     workerRunning[i] = true;
-    i++
+    i++;
   }
   cout << "!!! boss Thread Running!\n" << "managing " << *(short*)param << " worker threads\n" << endl;
   cout << "Enter a number of 1 to " << *(short *)param << " to make a thread print it's data set\n"
@@ -58,27 +58,22 @@ void *boss( void *param ){
   cin >> input;
   while(runningWorkers){
     if(input == 0)
-      i = 0;
-      while(i == 0){
-        if(i < *(short*)param)
-          break;
-
-        else if(workerRunning[i])
-          pthread_cond_signal( &tEnable[i] );
-
-        else
-          i++;
-
-
-      }
-
+    i = 0;
+    while(i == 0){
+      if(i < *(short*)param)
+      break;
+      else if(workerRunning[i])
+      pthread_cond_signal( &tEnable[i] );
+      i++;
+      else
+      i++;
     }
     else if( input > 0 && input <= *(short*)param){
       if(workerRunning[input -1])
-        pthread_cond_signal( &tEnable[input-1]);
+      pthread_cond_signal( &tEnable[input-1]);
 
       else
-        cout << "worker " << input << " already finished\n" << endl;
+      cout << "worker " << input << " already finished\n" << endl;
 
     }
     else if( input < 0 && (-input) <= *(short*)param){
@@ -91,12 +86,11 @@ void *boss( void *param ){
         runningWorkers--;
       }
       else
-        cout << "Worker " << input << " already canceled\n" <<endl;
+      cout << "Worker " << input << " already canceled\n" <<endl;
 
     }
     else
-      cout << "Error: Invalid Entry\n" << endl;
-
+    cout << "Error: Invalid Entry\n" << endl;
   }
   cout << "BOSS exits!\n"<< endl;
   pthread_exit(0);
