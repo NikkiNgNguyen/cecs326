@@ -19,8 +19,9 @@ theMutex; //mutex variable
 static int cleanup_pop_arg = 0;
 static void cleanupHandler( void *arg ){
   cout << "Worker " << cleanup_pop_arg << " cleaning up and exiting\n" "Worker";
-  if( pthread_mutex_unlock( &theMutex ) != 0 )
-  cout << "UHOH!\n";
+  if( pthread_mutex_unlock( &theMutex ) != 0 ){
+    cout << "UHOH!\n";
+  }
 }
 
 short signify = 0; //thread launch delay variable
@@ -37,8 +38,9 @@ public:
   :workerID( wi.workerID ),
   sizeOfDataSet( wi.sizeOfDataSet ){
     dataSet = new short[ sizeOfDataSet ];
-    for( int i = 0; i < sizeOfDataSet; i++ )
-    dataSet[ i ] = wi.dataSet[ i ];
+    for( int i = 0; i < sizeOfDataSet; i++ ){
+      dataSet[ i ] = wi.dataSet[ i ];
+    }
   }
 
   WorkerInfo( short wid, short sods )
@@ -48,8 +50,9 @@ public:
     if( size != sizeOfDataSet ){
       cout << "\tsizes not equal\n";
       sizeOfDataSet = size;
-      if( dataSet != nullptr )
-      delete [] dataSet;
+      if( dataSet != nullptr ){
+        delete [] dataSet;
+      }
       dataSet = new short [ size ];
     }
     if( dataSet == nullptr ){
@@ -57,14 +60,16 @@ public:
       dataSet = new short [ size ];
     }
     cout << "\tinitializing dataset\n";
-    for( int i = 0; i < sizeOfDataSet; i++ )
-    dataSet[ i ] = sA[ i ];
+    for( int i = 0; i < sizeOfDataSet; i++ ){
+      dataSet[ i ] = sA[ i ];
+    }
   }
 
   void showDataSet( ){
     cout << "worker " << workerID << " showing data:\n";
-    for( int i = 0; i < sizeOfDataSet; i++ )
-    cout << '\t' << dataSet[ i ] << endl;
+    for( int i = 0; i < sizeOfDataSet; i++ ){
+      cout << '\t' << dataSet[ i ] << endl;
+    }
   }
 
   short getWorkerID(){ return workerID; }
@@ -132,12 +137,12 @@ void *worker( void *param ){
   signify++;
   pthread_cleanup_push(cleanupHandler, NULL);
   while(1){
-      pthread_mutex_lock( &theMutex );
-      pthread_cond_wait(&tEnable[myInfo.getWorkerID()-1], &theMutex);
-      myInfo.showDataSet();
-      pthread_mutex_unlock( &theMutex );
-    }
-      pthread_cleanup_pop(cleanup_pop_arg);
+    pthread_mutex_lock( &theMutex );
+    pthread_cond_wait(&tEnable[myInfo.getWorkerID()-1], &theMutex);
+    myInfo.showDataSet();
+    pthread_mutex_unlock( &theMutex );
+  }
+  pthread_cleanup_pop(cleanup_pop_arg);
 }
 
 void *boss( void *param ){
@@ -162,7 +167,7 @@ void *boss( void *param ){
     if(input == 0){
       i = 0;
       while(i < *(short*)param){
-        if(workerRunning[i]){
+        if(workerRunning[i] == true){
           pthread_cond_signal( &tEnable[i] );
         }
         i++;
@@ -171,7 +176,7 @@ void *boss( void *param ){
       continue;
     }
     else if( (input > 0) && (input <= *(short*)param)){
-      if(workerRunning[input -1]){
+      if(workerRunning[input -1] == true){
         pthread_cond_signal( &tEnable[input-1]);
         //runningWorkers = true;
         continue;
@@ -179,11 +184,11 @@ void *boss( void *param ){
       else{
         cout << "worker " << input << " already finished\n" << endl;
         continue;
-    }
+      }
     }
     else if((input < 0) && ((-input) <= *(short*)param)){
       input = -input;
-      if(workerRunning[input-1]){
+      if(workerRunning[input-1] == true){
         cout << "Canceling worker " << input << endl;
         cleanup_pop_arg = input;
         pthread_cancel(tids[input-1]);
@@ -198,7 +203,7 @@ void *boss( void *param ){
     }
     cout << "Error: Invalid Entry\n" << endl;
     continue;
-}while(runningWorkers);
+  }while(runningWorkers == true);
   cout << "BOSS exits!\n";
   pthread_exit(0);
 }
