@@ -189,14 +189,14 @@ void *boss( void *param ){
         runningWorkers--;
         continue;
       }
-    }
       else{
         cout << "Worker " << input << " already canceled\n" <<endl;
         continue;
       }
     cout << "Error: Invalid Entry\n" << endl;
     continue;
-  }while(runningWorkers == true);
+  }
+}while(runningWorkers == true);
   cout << "BOSS exits!\n";
   pthread_exit(0);
 }
