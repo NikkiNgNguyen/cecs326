@@ -30,15 +30,13 @@ void *worker( void *param ){
   cout << "Worker Thread " <<  myInfo.getWorkerID()  << " Running!\n" <<endl;
   signify++;
   pthread_cleanup_push(cleanupHandler, NULL);
-  while(pthread_mutex_unlock( &theMutex ) > 0){
-    if(pthread_mutex_unlock( &theMutex ) == 1){
+  while(1){
       pthread_mutex_lock( &theMutex );
       pthread_cond_wait(&tEnable[myInfo.getWorkerID()-1], &theMutex);
       myInfo.showDataSet();
+      pthread_mutex_unlock( &theMutex );
     }
-    else
-    pthread_cleanup_pop(cleanup_pop_arg);
-  }
+      pthread_cleanup_pop(cleanup_pop_arg);
 }
 
 void *boss( void *param ){
