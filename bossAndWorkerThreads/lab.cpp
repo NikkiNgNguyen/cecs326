@@ -155,7 +155,7 @@ void *boss( void *param ){
   int input;
 
   do{
-    cout << " > ";
+    cout << "> ";
     cin >> input;
     if(input == 0){
       i = 0;
@@ -165,6 +165,8 @@ void *boss( void *param ){
         }
         i++;
       }
+      runningWorkers = true;
+      continue;
     }
     else if( (input > 0) && (input <= *(short*)param)){
       if(workerRunning[input -1]){
