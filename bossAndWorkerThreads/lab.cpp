@@ -42,7 +42,7 @@ void *worker( void *param ){
 }
 
 void *boss( void *param ){
-  short runningWorkers = *((short*)param);
+  short runningWorkers = *(short*)param;
   bool workerRunning[*(short*)param];
   int input = 0;
   int i = 0;
@@ -62,9 +62,10 @@ void *boss( void *param ){
     while(i == 0){
       if(i < *(short*)param)
       break;
-      else if(workerRunning[i])
-      pthread_cond_signal( &tEnable[i] );
-      i++;
+      else if(workerRunning[i]){
+        pthread_cond_signal( &tEnable[i] );
+        i++;
+      }
       else
       i++;
     }
