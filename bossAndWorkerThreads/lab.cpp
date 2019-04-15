@@ -141,7 +141,6 @@ void *worker( void *param ){
 void *boss( void *param ){
   short runningWorkers = *(short*)param;
   bool workerRunning[*(short*)param];
-  int input = 0;
   int i = 0;
 
   do{
@@ -155,6 +154,7 @@ void *boss( void *param ){
   << "Enter 0 to make all threads output their data sets\n" << endl;
 
   do{
+    int input;
     cout << " > ";
     cin >> input;
     if(input == 0){
@@ -168,7 +168,7 @@ void *boss( void *param ){
       continue;
     }
     else if( (input > 0) && (input <= *(short*)param)){
-      if(workerRunning[input -1]){
+      if(workerRunning[input -1] == true){
         pthread_cond_signal( &tEnable[input-1]);
         continue;
       }
